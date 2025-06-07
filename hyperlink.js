@@ -237,11 +237,11 @@ async function shortenLink(url) {
 function generateFormattedOutput(option, shortenedUrl) {
   switch (option) {
     case "profile":
-      return `[https://www.roblox.com/users/3095250/profile]("${shortenedUrl}")`
+      return `[https//www.roblox.com/users/3095250/profile]("${shortenedUrl}")`
     case "private-server":
-      return `[https://www.roblox.com/share?code=80177c63cdc8614aa84be3cbd84b051a&type=Server]("${shortenedUrl}")`
+      return `[https//www.roblox.com/share?code=80177c63cdc8614aa84be3cbd84b051a&type=Server]("${shortenedUrl}")`
     case "groups":
-      return `[https://www.roblox.com/groups/2194003353]("${shortenedUrl}")`
+      return `[https//www.roblox.com/groups/2194003353]("${shortenedUrl}")`
     default:
       return shortenedUrl
   }
