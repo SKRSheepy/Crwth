@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperLink - CRWTH Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Lightning Flash Overlay -->
+        <div class="lightning-overlay" id="lightningOverlay"></div>
+
+        <!-- Rain Effect -->
+        <div class="rain-container" id="rainContainer"></div>
+
+        <!-- Main Content -->
+        <div class="hyperlink-container">
+            <div class="hyperlink-card" id="hyperlinkCard">
+                <div class="card-header">
+                    <h1 class="page-title">HyperLink</h1>
+                </div>
+
+                <div class="card-content">
+                    <div class="form-group">
+                        <label class="form-label">Select Option</label>
+                        <select class="form-select" id="optionSelect">
+                            <option value="">Select an option</option>
+                            <option value="profile">Profile</option>
+                            <option value="private-server">Private Server</option>
+                            <option value="groups">Groups</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Select Shortener</label>
+                        <select class="form-select" id="shortenerSelect">
+                            <option value="">Select a shortener</option>
+                            <option value="tinyurl">TinyURL</option>
+                            <option value="shorturl">ShortURL.asia</option>
+                            <option value="spoo">Spoo.com</option>
+                            <option value="isgd">Is.gd</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Enter Your Link</label>
+                        <input type="url" class="form-input" id="linkInput" placeholder="https://example.com">
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <button class="generate-button" id="generateButton">Generate Link</button>
+
+                    <div class="back-section">
+                        <button class="back-button" onclick="window.location.href='index.html'">Back to Hub</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Card -->
+            <div class="output-card" id="outputCard">
+                <div class="card-content">
+                    <h3 class="output-title">Generated Output</h3>
+                    <div class="output-code">
+                        <code id="outputCode"></code>
+                    </div>
+                    <button class="copy-button" id="copyButton">
+                        <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy Output
+                    </button>
+                    <div class="output-info">
+                        <p class="selected-option">Selected option: <span id="selectedOptionText"></span></p>
+                        <p class="shortened-link">Shortened link: <span id="shortenedLinkText"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="hyperlink.js"></script>
+</body>
+</html>
