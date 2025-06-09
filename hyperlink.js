@@ -1,20 +1,11 @@
 // Global variables
-let isLightning = false
 let selectedOption = ""
 let inputLink = ""
 let shortenedLink = ""
 let formattedOutput = ""
-let isLoading = false
-let error = ""
 let copied = false
-let showOutput = false
-let isTransitioning = false
-let selectedShortener = ""
 
 // DOM elements
-const lightningOverlay = document.getElementById("lightningOverlay")
-const rainContainer = document.getElementById("rainContainer")
-const hyperlinkCard = document.getElementById("hyperlinkCard")
 const optionSelect = document.getElementById("optionSelect")
 const linkInput = document.getElementById("linkInput")
 const errorMessage = document.getElementById("errorMessage")
@@ -26,7 +17,7 @@ const selectedOptionText = document.getElementById("selectedOptionText")
 const shortenedLinkText = document.getElementById("shortenedLinkText")
 const shortenerSelect = document.getElementById("shortenerSelect")
 
-// Services with API URLs
+// Supported services with API URLs
 const services = {
   tinyurl: (url) => `https://api.tinyurl.com/create`,
   shorturl: (url) => `https://api.shorturl.asia/v1/shorten`,
@@ -34,19 +25,16 @@ const services = {
   shortly: (url) => `https://api.short.ly/v1/shorten`
 }
 
-// Generate shortened URL function
+// Shorten URL function
 async function shortenLink(url, shortener) {
-  if (!url) {
-    throw new Error("No URL provided")
-  }
+  if (!url) throw new Error("No URL provided")
 
   if (shortener === "tinyurl") {
     const response = await fetch(services.tinyurl(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Add your API key here if needed
-        // "Authorization": "Bearer YOUR_API_KEY",
+        // Add API key if needed
       },
       body: JSON.stringify({ url }),
     })
@@ -56,12 +44,11 @@ async function shortenLink(url, shortener) {
   }
 
   else if (shortener === "shorturl") {
-    // ShortURL.asia requires an API key - placeholder below
     const response = await fetch(services.shorturl(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "Authorization": "Bearer YOUR_API_KEY",
+        // Add API key if needed
       },
       body: JSON.stringify({ url }),
     })
@@ -82,7 +69,7 @@ async function shortenLink(url, shortener) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "Authorization": "Bearer YOUR_API_KEY",
+        // Add API key if needed
       },
       body: JSON.stringify({ long_url: url }),
     })
@@ -96,7 +83,7 @@ async function shortenLink(url, shortener) {
   }
 }
 
-// Event listener for Generate button
+// Generate button handler
 generateButton.addEventListener("click", async () => {
   errorMessage.textContent = ""
   selectedOption = optionSelect.value
@@ -122,7 +109,6 @@ generateButton.addEventListener("click", async () => {
 
     shortenedLink = await shortenLink(inputLink, selectedShortener)
 
-    // Format output (example formatting)
     formattedOutput = `<a href="${shortenedLink}" target="_blank" rel="noopener noreferrer">${shortenedLink}</a>`
 
     outputCode.innerHTML = formattedOutput
@@ -137,7 +123,7 @@ generateButton.addEventListener("click", async () => {
   }
 })
 
-// Copy button functionality
+// Copy button handler
 copyButton.addEventListener("click", () => {
   if (!shortenedLink) return
   navigator.clipboard.writeText(shortenedLink)
