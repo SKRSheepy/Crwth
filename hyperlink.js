@@ -249,44 +249,55 @@ async function shortenLink(url) {
     }
 
     const service = services[selectedShortener]
-    if (!service) {
-      throw new Error("Invalid shortener selected")
+    if (!service) throw new Error("Invalid shortener selected")
+
+    const requestOptions = {
+      method: service.method,
+      mode: "cors",
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+        ...(service.headers || {}),
+      },
     }
 
-    try {
-      const requestOptions = {
-        method: service.method,
-        mode: "cors",
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-          ...(service.headers || {}),
-        },
-      }
-
-      if (service.body) {
-        requestOptions.body = service.body
-      }
-
-      const response = await fetch(service.url, requestOptions)
-
-      if (response.ok) {
-        let shortened
-        if (selectedShortener === "spoo") {
-          const data = await response.json()
-          shortened = data.short_url
-        } else {
-          shortened = await response.text()
-        }
-
-        if (shortened && shortened.startsWith("http") && !shortened.includes("Error")) {
-          return shortened.trim()
-        }
-      }
-    } catch (serviceError) {
-      console.log(`${service.name} failed:`, serviceError)
-      throw serviceError
+    if (service.body) {
+      requestOptions.body = service.body
     }
+
+    const response = await fetch(service.url, requestOptions)
+
+    if (!response.ok) {
+      console.error(`${service.name} responded with status:`, response.status)
+      throw new Error("Fetch failed")
+    }
+
+    let shortened
+
+    if (selectedShortener === "spoo") {
+      const data = await response.json()
+      console.log("Spoo.com response:", data)
+      shortened = data.url || data.short_url
+    } else if (selectedShortener === "shorturl") {
+      const data = await response.json()
+      console.log("ShortURL.asia response:", data)
+      shortened = data.shortenedUrl
+    } else {
+      shortened = await response.text()
+    }
+
+    if (shortened && shortened.startsWith("http")) {
+      return shortened.trim()
+    } else {
+      console.warn("Invalid shortened result:", shortened)
+      throw new Error("Invalid shortened URL")
+    }
+
+  } catch (err) {
+    console.error("Shortening failed:", err.message)
+    throw new Error("Failed to shorten the link. Please try again later.")
+  }
+}
 
     // If the selected service fails, create a mock shortened link
     const mockShortened = `https://short.ly/${Math.random().toString(36).substring(2, 8)}${Date.now().toString(36)}`
