@@ -26,6 +26,14 @@ const selectedOptionText = document.getElementById("selectedOptionText");
 const shortenedLinkText = document.getElementById("shortenedLinkText");
 const shortenerSelect = document.getElementById("shortenerSelect");
 
+// URL shortener API endpoints
+const services = {
+  tinyurl: "https://api.tinyurl.com/create",
+  shorturl: "https://api.shorturl.asia/v1/shorten",
+  spoo: "https://spoo.com/api/shorten", // Replace with actual if different
+  isgd: "https://is.gd/create.php?format=json&url="
+};
+
 // Event listeners
 optionSelect.addEventListener("change", () => {
   selectedOption = optionSelect.value;
