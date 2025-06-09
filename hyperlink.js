@@ -1,5 +1,3 @@
-console.log("hyperlink.js loaded!");
-
 // Global variables
 let isLightning = false
 let selectedOption = ""
@@ -220,106 +218,10 @@ function updateOutputDisplay() {
   copyButton.classList.remove("copied")
 }
 
-// Shorten link
+// Shorten link - mock version for testing without API calls
 async function shortenLink(url) {
-  try {
-    const uniqueUrl = `${url}${url.includes("?") ? "&" : "?"}_t=${Date.now()}&_r=${Math.random().toString(36).substring(2, 8)}`
-
-    const services = {
-      tinyurl: {
-        name: "TinyURL",
-        url: `https://tinyurl.com/api-create.php?url=${encodeURIComponent(uniqueUrl)}`,
-        method: "GET",
-      },
-      shorturl: {
-        name: "ShortURL.asia",
-        url: `https://shorturl.asia/api?url=${encodeURIComponent(uniqueUrl)}`,
-        method: "GET",
-      },
-      spoo: {
-        name: "Spoo.com",
-        url: `https://spoo.me/`,
-        method: "POST",
-        body: JSON.stringify({ url: uniqueUrl }),
-        headers: { "Content-Type": "application/json" },
-      },
-      isgd: {
-        name: "Is.gd",
-        url: `https://is.gd/create.php?format=simple&url=${encodeURIComponent(uniqueUrl)}`,
-        method: "GET",
-      },
-    }
-
-    const service = services[selectedShortener]
-    if (!service) {
-      throw new Error("Invalid shortener selected")
-    }
-
-    try {
-      const requestOptions = {
-        method: service.method,
-        mode: "cors",
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-          ...(service.headers || {}),
-        },
-      }
-
-      if (service.body) {
-        requestOptions.body = service.body
-      }
-
-      const response = await fetch(service.url, requestOptions)
-
-      if (response.ok) {
-        let shortened
-        if (selectedShortener === "spoo") {
-          const data = await response.json()
-          shortened = data.short_url
-        } else {
-          shortened = await response.text()
-        }
-
-        if (shortened && shortened.startsWith("http") && !shortened.includes("Error")) {
-          return shortened.trim()
-        }
-      }
-    } catch (serviceError) {
-      console.log(`${service.name} failed:`, serviceError)
-      throw serviceError
-    }
-
-    // If the selected service fails, create a mock shortened link
-    const mockShortened = `https://short.ly/${Math.random().toString(36).substring(2, 8)}${Date.now().toString(36)}`
-    return mockShortened
-  } catch (error) {
-    const services = {
-      tinyurl: {
-        name: "TinyURL",
-        url: `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`,
-        method: "GET",
-      },
-      shorturl: {
-        name: "ShortURL.asia",
-        url: `https://shorturl.asia/api?url=${encodeURIComponent(url)}`,
-        method: "GET",
-      },
-      spoo: {
-        name: "Spoo.com",
-        url: `https://spoo.me/`,
-        method: "POST",
-        body: JSON.stringify({ url: url }),
-        headers: { "Content-Type": "application/json" },
-      },
-      isgd: {
-        name: "Is.gd",
-        url: `https://is.gd/create.php?format=simple&url=${encodeURIComponent(url)}`,
-        method: "GET",
-      },
-    }
-    throw new Error(`${services[selectedShortener]?.name || "Selected shortener"} is currently unavailable`)
-  }
+  // Just return a mock short link for testing
+  return `https://short.ly/${Math.random().toString(36).substring(2,8)}`
 }
 
 // Generate formatted output
